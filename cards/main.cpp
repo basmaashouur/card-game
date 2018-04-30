@@ -1,8 +1,7 @@
 /*
-g++ main.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+g++ main.o -o sfml-app -L<sfml-install-path>/lib -lsfml-graphics -lsfml-window -lsfml-system
 ./sfml-app
 */
-#include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics.hpp>
 #include <bits/stdc++.h>
 using namespace std;
@@ -12,18 +11,13 @@ using namespace sf;
 
 int main()
 {
-    sf::Music music;
-    if (!music.openFromFile("bat.ogg"))
-        return -1;
-    music.play();
-    sf::RenderWindow window(VideoMode(270, 450), "Cards Game");
-    //window.EnableKeyRepeat(false);
+    RenderWindow window(VideoMode(270, 450), "Cards Game");
     RectangleShape shape(Vector2f(50, 50));
     const sf::Color colorArray[6] = {Color::Cyan, Color::Blue, Color::Green, Color::Red,
                                      Color::Yellow, Color::Magenta
                                     };
     int check[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    //shape.setFillColor(Color::Red);
+    int fin [12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     vector<pair<double, double > >allpos;
     double incx = 0.0, incy = 0.0;
     int cn = 0, curvis = 0;
@@ -40,8 +34,6 @@ int main()
         incy += 70.0;
     }
 
-
-
     while (window.isOpen())
     {
         Event event;
@@ -49,6 +41,8 @@ int main()
         {
             if (event.type == Event::Closed)
                 window.close();
+
+            
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
                 double ex = event.mouseButton.x;
@@ -67,6 +61,16 @@ int main()
                         if (curvis == 2)
                         {
                             curvis = 0;
+                            for (int ii = 0; ii < 12; ii++)
+                            {
+                                if (check[ii] && ii != i )
+                                {
+                                    if (colorArray[i % 6] != colorArray[ii % 6])
+                                        check[i] = 0, check[ii] = 0;
+                                    else
+                                        fin[i] = 1, fin[ii] = 1;
+                                }
+                            }
                         }
                         break;
                     }
@@ -78,13 +82,11 @@ int main()
         for (int i = 0; i < 12; i++)
         {
             shape.setPosition(allpos[i].first, allpos[i].second);
-            if (check[i])shape.setFillColor(colorArray[i % 6]);
+            if (check[i] || fin[i])shape.setFillColor(colorArray[i % 6]);
             else shape.setFillColor(Color::White);
             window.draw(shape);
 
         }
-
-        cout << cn << endl;
 
         // game End
         if (cn == 12)
@@ -95,10 +97,7 @@ int main()
 
         window.display();
 
-
     }
 
     return 0;
 }
-
-
