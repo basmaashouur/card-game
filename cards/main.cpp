@@ -42,13 +42,14 @@ int main()
             if (event.type == Event::Closed)
                 window.close();
 
-            
+        // clicked on window
             else if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == Mouse::Left)
             {
                 double ex = event.mouseButton.x;
                 double wy = event.mouseButton.y;
                 for (int i = 0; i < 12; i++)
                 {
+                    // the click is on card
                     if (ex >= allpos[i].first && ex <= allpos[i].first + 50 &&
                             wy >= allpos[i].second <= wy && wy <= allpos[i].second + 50)
                     {
@@ -58,11 +59,13 @@ int main()
                         window.draw(shape);
                         cn++;
                         curvis++;
+                        // two cards clicked
                         if (curvis == 2)
                         {
                             curvis = 0;
                             for (int ii = 0; ii < 12; ii++)
                             {
+                                // check if the two cars are the same
                                 if (check[ii] && ii != i )
                                 {
                                     if (colorArray[i % 6] != colorArray[ii % 6])
@@ -78,7 +81,7 @@ int main()
             }
         }
         window.clear();
-
+        // display shapes on the window
         for (int i = 0; i < 12; i++)
         {
             shape.setPosition(allpos[i].first, allpos[i].second);
