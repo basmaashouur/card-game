@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "SFML/Window.hpp"
+#include <SFML/Audio.hpp>
 #include <bits/stdc++.h>
 using namespace std;
 using namespace sf;
@@ -17,6 +18,7 @@ Event event;
 Text timetext, numclicktext, foundtext;
 Font font;
 Clock clockk;
+Music musicc;
 
 
 // std
@@ -144,7 +146,9 @@ void endGame()
 int main()
 {
     gen(4, 3);
-    if (!font.loadFromFile("font.ttf"))cout << "erorr" << endl;
+    if (!font.loadFromFile("font.ttf"))return -1;
+    if (!musicc.openFromFile("bat.ogg"))return -1;
+    musicc.play();
     while (window.isOpen())
     {
         window.clear();
