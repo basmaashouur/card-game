@@ -16,6 +16,7 @@ RectangleShape shape(Vector2f(50, 50));
 Event event;
 Text timetext;
 Font font;
+Clock clockk;
 
 
 // std
@@ -24,12 +25,6 @@ vector<int>check(12, 0);
 vector<int>fin(12, 0);
 double incx = 0.0, incy = 0.0;
 int numclick = 0, curvis = 0, found = 0, countup = 0;
-
-class GameObject
-{
-public:
-        sf::Clock clock;
-};
 
 // Function to Genrate shapes
 void gen(int ex, int wy)
@@ -63,8 +58,7 @@ void drawShape()
 void drawTimeClicks()
 {
 
-    GameObject cl;
-    const unsigned int seconds = static_cast<unsigned int>(cl.clock.getElapsedTime().asSeconds());
+    const unsigned int seconds = static_cast<unsigned int>(clockk.getElapsedTime().asSeconds());
     string sec = "Time: "+to_string(seconds);
 
     timetext.setFont(font);
