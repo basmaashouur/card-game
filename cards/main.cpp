@@ -15,6 +15,7 @@ RenderWindow window(VideoMode(270, 450), "Cards Game");
 RectangleShape shape(Vector2f(50, 50));
 Event event;
 Text timetext;
+Font font;
 
 
 // std
@@ -24,6 +25,11 @@ vector<int>fin(12, 0);
 double incx = 0.0, incy = 0.0;
 int numclick = 0, curvis = 0, found = 0, countup = 0;
 
+class GameObject
+{
+public:
+        sf::Clock clock;
+};
 
 // Function to Genrate shapes
 void gen(int ex, int wy)
@@ -56,12 +62,16 @@ void drawShape()
 // Function to show the number of clicks and the time
 void drawTimeClicks()
 {
-    sf::Clock clock;
-    const unsigned int seconds = static_cast<unsigned int>(clock.getElapsedTime().asSeconds());
-    string finn = to_string(seconds);
-    timetext.setString(finn);
+
+    GameObject cl;
+    const unsigned int seconds = static_cast<unsigned int>(cl.clock.getElapsedTime().asSeconds());
+    string sec = "Time: "+to_string(seconds);
+
+    timetext.setFont(font);
+    timetext.setString(sec);
     timetext.setColor(sf::Color::White);
-    timetext.setPosition(40.f, 40.f);
+    timetext.setCharacterSize(25);
+    timetext.setPosition(40.f, 340.f);
     window.draw(timetext);
 
 }
@@ -115,10 +125,11 @@ void endGame()
 int main()
 {
     gen(4, 3);
+     if (!font.loadFromFile("font.ttf"))cout<<"erorr"<<endl;
     while (window.isOpen())
     {
         window.clear();
-       // drawShape();
+        drawShape();
         drawTimeClicks();
         window.display();
         if (found == 6)endGame();
