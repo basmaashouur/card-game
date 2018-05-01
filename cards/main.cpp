@@ -20,20 +20,12 @@ Font font;
 Clock clockk;
 Music musicc;
 
-
 // std
 vector<pair<double, double > >allpos;
 vector<int>check(12, 0);
 vector<int>fin(12, 0);
 double incx = 0.0, incy = 0.0;
 int numclick = 0, curvis = 0, found = 0, countup = 0;
-/*
-class GameObject
-{
-public:
-        sf::Clock clock;
-};
-*/
 
 // Function to Genrate shapes
 void gen(int ex, int wy)
@@ -70,7 +62,7 @@ void drawTimeClicks()
     const unsigned int seconds = static_cast<unsigned int>(clockk.getElapsedTime().asSeconds());
     string sec = "Time: " + to_string(seconds);
     string cl = "Tried: " + to_string(numclick / 2);
-    string fn = "Matching Cards: " + to_string(found);
+    string fn = "Matching cards: " + to_string(found);
     // time
     timetext.setFont(font);
     timetext.setString(sec);
@@ -136,9 +128,20 @@ void clickOnCard()
     }
 }
 
-
+// Function to close the game when the game is over
 void endGame()
 {
+    sf::sleep(sf::milliseconds(1000));
+    window.clear();
+    wontext.setFont(font);
+    wontext.setString("YOU WON HOOORAY");
+    wontext.setColor(sf::Color::Red);
+    wontext.setCharacterSize(20);
+    wontext.setPosition(50, 240.f);
+    window.draw(wontext);
+    window.display();
+    sf::sleep(sf::milliseconds(4000));
+    window.close();
 
 }
 
