@@ -11,10 +11,10 @@ const sf::Color colorArray[6] = {Color::Cyan, Color::Blue, Color::Green, Color::
                                  Color::Yellow, Color::Magenta
                                 };
 
-RenderWindow window(VideoMode(270, 450), "Cards Game");
+RenderWindow window(VideoMode(270, 500), "Cards Game");
 RectangleShape shape(Vector2f(50, 50));
 Event event;
-Text timetext;
+Text timetext, numclicktext, foundtext;
 Font font;
 Clock clockk;
 
@@ -25,6 +25,13 @@ vector<int>check(12, 0);
 vector<int>fin(12, 0);
 double incx = 0.0, incy = 0.0;
 int numclick = 0, curvis = 0, found = 0, countup = 0;
+/*
+class GameObject
+{
+public:
+        sf::Clock clock;
+};
+*/
 
 // Function to Genrate shapes
 void gen(int ex, int wy)
@@ -59,14 +66,32 @@ void drawTimeClicks()
 {
 
     const unsigned int seconds = static_cast<unsigned int>(clockk.getElapsedTime().asSeconds());
-    string sec = "Time: "+to_string(seconds);
-
+    string sec = "Time: " + to_string(seconds);
+    string cl = "Tried: " + to_string(numclick / 2);
+    string fn = "Matching Cards: " + to_string(found);
+    // time
     timetext.setFont(font);
     timetext.setString(sec);
-    timetext.setColor(sf::Color::White);
-    timetext.setCharacterSize(25);
+    timetext.setColor(sf::Color::Red);
+    timetext.setCharacterSize(20);
     timetext.setPosition(40.f, 340.f);
     window.draw(timetext);
+
+    // Number of clicks
+    numclicktext.setFont(font);
+    numclicktext.setString(cl);
+    numclicktext.setColor(sf::Color::Red);
+    numclicktext.setCharacterSize(20);
+    numclicktext.setPosition(40.f, 380.f);
+    window.draw(numclicktext);
+
+    // Number of found same card
+    foundtext.setFont(font);
+    foundtext.setString(fn);
+    foundtext.setColor(sf::Color::Red);
+    foundtext.setCharacterSize(20);
+    foundtext.setPosition(40.f, 420.f);
+    window.draw(foundtext);
 
 }
 
@@ -119,7 +144,7 @@ void endGame()
 int main()
 {
     gen(4, 3);
-     if (!font.loadFromFile("font.ttf"))cout<<"erorr"<<endl;
+    if (!font.loadFromFile("font.ttf"))cout << "erorr" << endl;
     while (window.isOpen())
     {
         window.clear();
