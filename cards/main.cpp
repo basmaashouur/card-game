@@ -157,7 +157,7 @@ int main()
     gen(4, 3);
     if (!font.loadFromFile("font.ttf"))return -1;
     if (!musicc.openFromFile("bat.ogg"))return -1;
-    //musicc.play();
+    musicc.play();
     while (window.isOpen())
     {
         window.clear();
