@@ -1,23 +1,29 @@
-/*
-./sfml-app
-*/
 #include <SFML/Graphics.hpp>
+#include "SFML/Window.hpp"
 #include <bits/stdc++.h>
 using namespace std;
 using namespace sf;
 
 // Game Objects
+
+// sf
 const sf::Color colorArray[6] = {Color::Cyan, Color::Blue, Color::Green, Color::Red,
                                  Color::Yellow, Color::Magenta
                                 };
-vector<int>check(12, 0);
-vector<int>fin(12, 0);
+
 RenderWindow window(VideoMode(270, 450), "Cards Game");
 RectangleShape shape(Vector2f(50, 50));
-vector<pair<double, double > >allpos;
-double incx = 0.0, incy = 0.0;
-int numclick = 0, curvis = 0, found = 0;
 Event event;
+String timee, clicks, curfound;
+
+
+// std
+vector<pair<double, double > >allpos;
+vector<int>check(12, 0);
+vector<int>fin(12, 0);
+double incx = 0.0, incy = 0.0;
+int numclick = 0, curvis = 0, found = 0, countup = 0;
+
 
 // Function to Genrate shapes
 void gen(int ex, int wy)
@@ -48,9 +54,9 @@ void drawShape()
 }
 
 // Function to show the number of clicks and the time
-void showNumbs()
+void showTimeClicks()
 {
-    
+
 }
 
 // Function to trace the cards when clicked on them
@@ -84,7 +90,7 @@ void clickOnCard()
                         else
                             fin[i] = 1, fin[ii] = 1, found++;
                     }
-                    else if(check[ii] && ii == i) check[i] = 0, check[ii] = 0;
+                    else if (check[ii] && ii == i) check[i] = 0, check[ii] = 0;
                 }
             }
             break;
@@ -106,7 +112,7 @@ int main()
     {
         window.clear();
         drawShape();
-        showNumbs();
+        showTimeClicks();
         window.display();
         if (found == 6)endGame();
 
