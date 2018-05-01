@@ -118,7 +118,7 @@ int main()
     while (window.isOpen())
     {
         window.clear();
-        drawShape();
+       // drawShape();
         drawTimeClicks();
         window.display();
         if (found == 6)endGame();
