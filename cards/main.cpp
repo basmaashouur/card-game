@@ -15,13 +15,14 @@ const sf::Color colorArray[6] = {Color::Cyan, Color::Blue, Color::Green, Color::
 RenderWindow window(VideoMode(270, 500), "Cards Game");
 RectangleShape shape(Vector2f(50, 50));
 Event event;
-Text timetext, numclicktext, foundtext;
+Text timetext, numclicktext, foundtext, wontext;
 Font font;
 Clock clockk;
 Music musicc;
 
 // std
 vector<pair<double, double > >allpos;
+vector<int>randcols;
 vector<int>check(12, 0);
 vector<int>fin(12, 0);
 double incx = 0.0, incy = 0.0;
@@ -48,7 +49,7 @@ void drawShape()
     for (int i = 0; i < 12; i++)
     {
         shape.setPosition(allpos[i].first, allpos[i].second);
-        if (check[i] || fin[i])shape.setFillColor(colorArray[i % 6]);
+        if (check[i] || fin[i])shape.setFillColor(colorArray[randcols[i]]);
         else shape.setFillColor(Color::White);
         window.draw(shape);
 
@@ -101,7 +102,7 @@ void clickOnCard()
                 wy >= allpos[i].second <= wy && wy <= allpos[i].second + 50)
         {
             shape.setPosition(allpos[i].first, allpos[i].second);
-            shape.setFillColor(colorArray[i % 6]);
+            shape.setFillColor(colorArray[randcols[i]]);
             check[i] = 1;
             window.draw(shape);
             numclick++;
@@ -115,7 +116,7 @@ void clickOnCard()
                     // check if the two cards are the same
                     if (check[ii] && ii != i )
                     {
-                        if (colorArray[i % 6] != colorArray[ii % 6])
+                        if (colorArray[randcols[i]] != colorArray[randcols[ii]])
                             check[i] = 0, check[ii] = 0;
                         else
                             fin[i] = 1, fin[ii] = 1, found++;
@@ -128,7 +129,7 @@ void clickOnCard()
     }
 }
 
-// Function to close the game when the game is over
+
 void endGame()
 {
     sf::sleep(sf::milliseconds(1000));
@@ -148,10 +149,15 @@ void endGame()
 
 int main()
 {
+    // genrate random colors indcies
+    for (int y = 0; y < 2; y++)
+        for (int x = 0; x < 6; x++)randcols.push_back(x);
+    random_shuffle (randcols.begin(), randcols.end() );
+
     gen(4, 3);
     if (!font.loadFromFile("font.ttf"))return -1;
     if (!musicc.openFromFile("bat.ogg"))return -1;
-    musicc.play();
+    //musicc.play();
     while (window.isOpen())
     {
         window.clear();
