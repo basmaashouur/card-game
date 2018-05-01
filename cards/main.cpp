@@ -47,6 +47,12 @@ void drawShape()
     }
 }
 
+// Function to show the number of clicks and the time
+void showNumbs()
+{
+    
+}
+
 // Function to trace the cards when clicked on them
 void clickOnCard()
 {
@@ -78,6 +84,7 @@ void clickOnCard()
                         else
                             fin[i] = 1, fin[ii] = 1, found++;
                     }
+                    else if(check[ii] && ii == i) check[i] = 0, check[ii] = 0;
                 }
             }
             break;
@@ -99,6 +106,7 @@ int main()
     {
         window.clear();
         drawShape();
+        showNumbs();
         window.display();
         if (found == 6)endGame();
 
