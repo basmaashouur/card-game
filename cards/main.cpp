@@ -14,7 +14,7 @@ const sf::Color colorArray[6] = {Color::Cyan, Color::Blue, Color::Green, Color::
 RenderWindow window(VideoMode(270, 450), "Cards Game");
 RectangleShape shape(Vector2f(50, 50));
 Event event;
-String timee, clicks, curfound;
+Text timetext;
 
 
 // std
@@ -54,8 +54,15 @@ void drawShape()
 }
 
 // Function to show the number of clicks and the time
-void showTimeClicks()
+void drawTimeClicks()
 {
+    sf::Clock clock;
+    const unsigned int seconds = static_cast<unsigned int>(clock.getElapsedTime().asSeconds());
+    string finn = to_string(seconds);
+    timetext.setString(finn);
+    timetext.setColor(sf::Color::White);
+    timetext.setPosition(40.f, 40.f);
+    window.draw(timetext);
 
 }
 
@@ -112,7 +119,7 @@ int main()
     {
         window.clear();
         drawShape();
-        showTimeClicks();
+        drawTimeClicks();
         window.display();
         if (found == 6)endGame();
 
