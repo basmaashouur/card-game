@@ -18,7 +18,7 @@ Event event;
 Text timetext, numclicktext, foundtext, wontext;
 Font font;
 Clock clockk;
-Music musicc;
+Music musicc, musicend;
 
 // std
 vector<pair<double, double > >allpos;
@@ -76,10 +76,9 @@ void drawShape()
 // Function to show the number of clicks and the time
 void drawTimeClicks()
 {
-
     const unsigned int seconds = static_cast<unsigned int>(clockk.getElapsedTime().asSeconds());
     string sec = "Time: " + to_string(seconds);
-    string cl = "Tried: " + to_string(numclick / 2);
+    string cl = "Clicks: " + to_string(numclick);
     string fn = "Matching cards: " + to_string(found);
 
     // time
@@ -105,7 +104,6 @@ void drawTimeClicks()
     foundtext.setCharacterSize(20);
     foundtext.setPosition(40.f, 420.f);
     window.draw(foundtext);
-
 }
 
 // Function to know if the two cards are the same or not
@@ -164,9 +162,12 @@ void clickOnCard()
     }
 }
 
-void endGame()
+int endGame()
 {
+    musicc.pause();
     sleep(milliseconds(1000));
+    if (!musicend.openFromFile("end.ogg"))return -1;
+    musicend.play();
     window.clear();
     wontext.setFont(font);
     wontext.setString("YOU WON HOOORAY");
@@ -177,7 +178,6 @@ void endGame()
     window.display();
     sleep(milliseconds(4000));
     window.close();
-
 }
 
 
