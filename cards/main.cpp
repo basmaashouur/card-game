@@ -43,6 +43,22 @@ void gen(int ex, int wy)
     }
 }
 
+// Function to do process before the game loop start
+int doFirst()
+{
+     // genrate random colors indcies
+    for (int y = 0; y < 2; y++)
+        for (int x = 0; x < 6; x++)randcols.push_back(x);
+    random_shuffle (randcols.begin(), randcols.end() );
+
+    gen(4, 3);
+
+    if (!font.loadFromFile("font.ttf"))return -1;
+    if (!musicc.openFromFile("bat.ogg"))return -1;
+    musicc.play();
+
+}
+
 // Function to draw shapes
 void drawShape()
 {
@@ -64,10 +80,11 @@ void drawTimeClicks()
     string sec = "Time: " + to_string(seconds);
     string cl = "Tried: " + to_string(numclick / 2);
     string fn = "Matching cards: " + to_string(found);
+
     // time
     timetext.setFont(font);
     timetext.setString(sec);
-    timetext.setColor(sf::Color::Red);
+    timetext.setColor(Color::Red);
     timetext.setCharacterSize(20);
     timetext.setPosition(40.f, 340.f);
     window.draw(timetext);
@@ -75,7 +92,7 @@ void drawTimeClicks()
     // Number of clicks
     numclicktext.setFont(font);
     numclicktext.setString(cl);
-    numclicktext.setColor(sf::Color::Red);
+    numclicktext.setColor(Color::Red);
     numclicktext.setCharacterSize(20);
     numclicktext.setPosition(40.f, 380.f);
     window.draw(numclicktext);
@@ -83,10 +100,28 @@ void drawTimeClicks()
     // Number of found same card
     foundtext.setFont(font);
     foundtext.setString(fn);
-    foundtext.setColor(sf::Color::Red);
+    foundtext.setColor(Color::Red);
     foundtext.setCharacterSize(20);
     foundtext.setPosition(40.f, 420.f);
     window.draw(foundtext);
+
+}
+void twoCards(int i)
+{
+
+    curvis = 0;
+    for (int ii = 0; ii < 12; ii++)
+    {
+        // check if the two cards are the same
+        if (check[ii] && ii != i )
+        {
+            if (colorArray[randcols[i]] != colorArray[randcols[ii]])
+                check[i] = 0, check[ii] = 0;
+            else
+                fin[i] = 1, fin[ii] = 1, found++;
+        }
+        else if (check[ii] && ii == i) check[i] = 0, check[ii] = 0;
+    }
 
 }
 
@@ -105,34 +140,23 @@ void clickOnCard()
             shape.setFillColor(colorArray[randcols[i]]);
             check[i] = 1;
             window.draw(shape);
+
             numclick++;
             curvis++;
+
             // two cards clicked
-            if (curvis == 2)
-            {
-                curvis = 0;
-                for (int ii = 0; ii < 12; ii++)
-                {
-                    // check if the two cards are the same
-                    if (check[ii] && ii != i )
-                    {
-                        if (colorArray[randcols[i]] != colorArray[randcols[ii]])
-                            check[i] = 0, check[ii] = 0;
-                        else
-                            fin[i] = 1, fin[ii] = 1, found++;
-                    }
-                    else if (check[ii] && ii == i) check[i] = 0, check[ii] = 0;
-                }
-            }
+            if (curvis == 2)twoCards(i);
             break;
         }
     }
 }
 
 
+
+
 void endGame()
 {
-    sf::sleep(sf::milliseconds(1000));
+    sleep(milliseconds(1000));
     window.clear();
     wontext.setFont(font);
     wontext.setString("YOU WON HOOORAY");
@@ -141,7 +165,7 @@ void endGame()
     wontext.setPosition(50, 240.f);
     window.draw(wontext);
     window.display();
-    sf::sleep(sf::milliseconds(4000));
+    sleep(milliseconds(4000));
     window.close();
 
 }
@@ -149,15 +173,8 @@ void endGame()
 
 int main()
 {
-    // genrate random colors indcies
-    for (int y = 0; y < 2; y++)
-        for (int x = 0; x < 6; x++)randcols.push_back(x);
-    random_shuffle (randcols.begin(), randcols.end() );
+    doFirst();
 
-    gen(4, 3);
-    if (!font.loadFromFile("font.ttf"))return -1;
-    if (!musicc.openFromFile("bat.ogg"))return -1;
-    musicc.play();
     while (window.isOpen())
     {
         window.clear();
