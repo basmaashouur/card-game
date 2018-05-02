@@ -28,6 +28,7 @@ vector<int>fin(12, 0);
 double incx = 0.0, incy = 0.0;
 int numclick = 0, curvis = 0, found = 0, countup = 0;
 
+
 // Function to Genrate shapes
 void gen(int ex, int wy)
 {
@@ -46,7 +47,7 @@ void gen(int ex, int wy)
 // Function to do process before the game loop start
 int doFirst()
 {
-     // genrate random colors indcies
+    // genrate random colors indcies
     for (int y = 0; y < 2; y++)
         for (int x = 0; x < 6; x++)randcols.push_back(x);
     random_shuffle (randcols.begin(), randcols.end() );
@@ -106,6 +107,8 @@ void drawTimeClicks()
     window.draw(foundtext);
 
 }
+
+// Function to know if the two cards are the same or not
 void twoCards(int i)
 {
 
@@ -145,14 +148,21 @@ void clickOnCard()
             curvis++;
 
             // two cards clicked
-            if (curvis == 2)twoCards(i);
+            if (curvis == 2)
+            {
+                window.clear();
+                drawShape();
+                drawTimeClicks();
+                window.display();
+                // wait one second then call twoCards
+                sleep(milliseconds(1000));
+                twoCards(i);
+            }
+
             break;
         }
     }
 }
-
-
-
 
 void endGame()
 {
@@ -193,6 +203,5 @@ int main()
                 clickOnCard();
         }
     }
-
     return 0;
 }
